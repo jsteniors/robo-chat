@@ -6,18 +6,36 @@ function constructor(http) {
 
     io.sockets.on('connection', function (socket) {
         connections.push(socket);
-
+        var chatId = null;
         socket.on('load', function(data){
+            var message = {
+                chatId: chatId,
+                type: 'message',
+                time: new Date().getTime()
+            };
             if(data){
-
-                //socket.emit('receive', );
+                chatId = data;
+                socket.join(data);
+                socket.emit('')
             }else{
+                chatId = gen.generate(12);
 
+                socket.join(chatId);
+
+                var content = 'Bem vindo';
+                message.content = content;
+                socket.emit('receive', message);
             }
         });
 
         socket.on('message', function(data){
-            socket.broadcast.emit();
+            var message = {
+                chatId: chatId,
+                type: 'message',
+                time: new Date().getTime(),
+                content: 'Resposta para: '+data
+            };
+            socket.broadcast.to(chatId).emit();
         });
 
         socket.on('disconnect', function(data){
