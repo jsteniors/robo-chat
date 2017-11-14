@@ -10,7 +10,7 @@ function constructor(http) {
         socket.on('load', function(data){
             if(data){
 
-                //socket.emit('receive', );
+
             }else{
 
             }
